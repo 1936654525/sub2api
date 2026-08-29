@@ -208,8 +208,8 @@ type SystemSettings struct {
 	ClaudeOAuthSystemPrompt                string `json:"claude_oauth_system_prompt"`
 	ClaudeOAuthSystemPromptBlocks          string `json:"claude_oauth_system_prompt_blocks"`
 	EnableAnthropicCacheTTL1hInjection     bool   `json:"enable_anthropic_cache_ttl_1h_injection"`
-	EnableGlobalSystemPrompt bool   `json:"enable_global_system_prompt"`
-	GlobalSystemPrompt        string `json:"global_system_prompt"`
+	EnableGlobalSystemPrompt             bool   `json:"enable_global_system_prompt"`
+	GlobalSystemPrompt                  string `json:"global_system_prompt"`
 	RewriteMessageCacheControl             bool   `json:"rewrite_message_cache_control"`
 	EnableClientDatelineNormalization      bool   `json:"enable_client_dateline_normalization"`
 	AntigravityUserAgentVersion            string `json:"antigravity_user_agent_version"`

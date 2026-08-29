@@ -632,6 +632,7 @@ const (
 	SettingKeyClaudeOAuthSystemPrompt = "claude_oauth_system_prompt"
 	// SettingKeyClaudeOAuthSystemPromptBlocks Claude OAuth mimic 路径注入的 system blocks JSON 配置（空值使用内置默认）
 	SettingKeyClaudeOAuthSystemPromptBlocks = "claude_oauth_system_prompt_blocks"
+	// SettingKeyEnableAnthropicCacheTTL1hInjection 是否对 Anthropic OAuth/SetupToken 请求体注入 1h cache_control ttl（默认 false）
 	SettingKeyEnableAnthropicCacheTTL1hInjection = "enable_anthropic_cache_ttl_1h_injection"
 	// SettingKeyEnableGlobalSystemPrompt 是否对所有通道启用全局系统提示词注入（默认 false）
 	SettingKeyEnableGlobalSystemPrompt = "enable_global_system_prompt"

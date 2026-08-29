@@ -59,9 +59,8 @@ type cachedGatewayForwardingSettings struct {
 	claudeOAuthSystemPromptInjection bool
 	claudeOAuthSystemPrompt          string
 	claudeOAuthSystemPromptBlocks    string
-	globalSystemPromptInjection bool
-	globalSystemPromptEnabled   bool
-	globalSystemPrompt          string
+	globalSystemPromptInjection       bool
+	globalSystemPrompt                string
 	anthropicCacheTTL1hInjection     bool
 	rewriteMessageCacheControl       bool
 	clientDatelineNormalization      bool
@@ -742,7 +741,7 @@ type gatewayForwardingSettingsResult struct {
 	fp, mp, cch, claudeOAuthSystemPromptInjection, cacheTTL1h, rewriteMessageCacheControl bool
 	clientDatelineNormalization                                                           bool
 	claudeOAuthSystemPrompt, claudeOAuthSystemPromptBlocks                                string
-	globalSystemPromptInjection, globalSystemPromptEnabled bool
+	globalSystemPromptInjection                                           bool
 	globalSystemPrompt                                                    string
 }
 
@@ -756,9 +755,8 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 				claudeOAuthSystemPromptInjection: cached.claudeOAuthSystemPromptInjection,
 				claudeOAuthSystemPrompt:          cached.claudeOAuthSystemPrompt,
 				claudeOAuthSystemPromptBlocks:    cached.claudeOAuthSystemPromptBlocks,
-				globalSystemPromptInjection: cached.globalSystemPromptInjection,
-				globalSystemPromptEnabled:       cached.globalSystemPromptEnabled,
-				globalSystemPrompt:              cached.globalSystemPrompt,
+				globalSystemPromptInjection:       cached.globalSystemPromptInjection,
+				globalSystemPrompt:                cached.globalSystemPrompt,
 				cacheTTL1h:                       cached.anthropicCacheTTL1hInjection,
 				rewriteMessageCacheControl:       cached.rewriteMessageCacheControl,
 				clientDatelineNormalization:      cached.clientDatelineNormalization,
@@ -775,9 +773,8 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 					claudeOAuthSystemPromptInjection: cached.claudeOAuthSystemPromptInjection,
 					claudeOAuthSystemPrompt:          cached.claudeOAuthSystemPrompt,
 					claudeOAuthSystemPromptBlocks:    cached.claudeOAuthSystemPromptBlocks,
-				globalSystemPromptInjection: cached.globalSystemPromptInjection,
-				globalSystemPromptEnabled:       cached.globalSystemPromptEnabled,
-				globalSystemPrompt:              cached.globalSystemPrompt,
+					globalSystemPromptInjection:       cached.globalSystemPromptInjection,
+					globalSystemPrompt:                cached.globalSystemPrompt,
 					cacheTTL1h:                       cached.anthropicCacheTTL1hInjection,
 					rewriteMessageCacheControl:       cached.rewriteMessageCacheControl,
 					clientDatelineNormalization:      cached.clientDatelineNormalization,
@@ -791,8 +788,8 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 			SettingKeyEnableMetadataPassthrough,
 			SettingKeyEnableCCHSigning,
 			SettingKeyEnableClaudeOAuthSystemPromptInjection,
-				SettingKeyEnableGlobalSystemPrompt,
-				SettingKeyGlobalSystemPrompt,
+			SettingKeyEnableGlobalSystemPrompt,
+			SettingKeyGlobalSystemPrompt,
 			SettingKeyClaudeOAuthSystemPrompt,
 			SettingKeyClaudeOAuthSystemPromptBlocks,
 			SettingKeyEnableAnthropicCacheTTL1hInjection,
@@ -846,9 +843,8 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 			claudeOAuthSystemPromptInjection: systemPromptInjection,
 			claudeOAuthSystemPrompt:          systemPrompt,
 			claudeOAuthSystemPromptBlocks:    systemPromptBlocks,
-			globalSystemPromptInjection:      globalSystemPromptInjection,
-			globalSystemPromptEnabled:       globalSystemPromptInjection,
-			globalSystemPrompt:              globalSystemPrompt,
+			globalSystemPromptInjection:       globalSystemPromptInjection,
+			globalSystemPrompt:                globalSystemPrompt,
 			anthropicCacheTTL1hInjection:     cacheTTL1h,
 			rewriteMessageCacheControl:       rewriteMessageCacheControl,
 			clientDatelineNormalization:      clientDatelineNormalization,
@@ -861,9 +857,8 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 			claudeOAuthSystemPromptInjection: systemPromptInjection,
 			claudeOAuthSystemPrompt:          systemPrompt,
 			claudeOAuthSystemPromptBlocks:    systemPromptBlocks,
-			globalSystemPromptInjection:      globalSystemPromptInjection,
-			globalSystemPromptEnabled:       globalSystemPromptInjection,
-			globalSystemPrompt:              globalSystemPrompt,
+			globalSystemPromptInjection:       globalSystemPromptInjection,
+			globalSystemPrompt:                globalSystemPrompt,
 			cacheTTL1h:                       cacheTTL1h,
 			rewriteMessageCacheControl:       rewriteMessageCacheControl,
 			clientDatelineNormalization:      clientDatelineNormalization,
