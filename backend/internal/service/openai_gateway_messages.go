@@ -34,6 +34,13 @@ func (s *OpenAIGatewayService) ForwardAsAnthropic(
 	defaultMappedModel string,
 ) (*OpenAIForwardResult, error) {
 	beginUpstreamResponseModelObservation(c)
+
+	// Global system prompt injection: /v1/messages (Anthropic format) requests
+	// converted through the OpenAI gateway also receive the configured global
+	// system prompt before any conversion or forwarding.
+	if injected := injectGlobalSystemPromptIfEnabled(s.settingService, ctx, PlatformAnthropic, body); len(injected) != 0 {
+		body = injected
+	}
 	ClearActualOpenAIUpstreamEndpoint(c)
 	if shouldForwardOpenAIResponsesViaRawChatCompletions(account) {
 		SetActualOpenAIUpstreamEndpoint(c, "/v1/chat/completions")
@@ -579,8 +586,11 @@ func (s *OpenAIGatewayService) handleAnthropicBufferedStreamingResponse(
 		return nil, fmt.Errorf("upstream stream ended without terminal event")
 	}
 	observer := upstreamResponseModelObserverFromContext(c)
-	if observer == nil {
-		observer = beginUpstreamResponseModelObservation(c)
+	// converted through the OpenAI gateway also receive the configured global
+	// system prompt before any conversion or forwarding.
+	if injected := injectGlobalSystemPromptIfEnabled(s.settingService, ctx, PlatformAnthropic, body); len(injected) != 0 {
+		body = injected
+	}
 	}
 	observer.Observe(finalResponse.Model, true)
 	observer.ObserveServiceTier(finalResponse.ServiceTier, true)

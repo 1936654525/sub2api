@@ -59,6 +59,9 @@ type cachedGatewayForwardingSettings struct {
 	claudeOAuthSystemPromptInjection bool
 	claudeOAuthSystemPrompt          string
 	claudeOAuthSystemPromptBlocks    string
+	globalSystemPromptInjection bool
+	globalSystemPromptEnabled   bool
+	globalSystemPrompt          string
 	anthropicCacheTTL1hInjection     bool
 	rewriteMessageCacheControl       bool
 	clientDatelineNormalization      bool
@@ -739,6 +742,8 @@ type gatewayForwardingSettingsResult struct {
 	fp, mp, cch, claudeOAuthSystemPromptInjection, cacheTTL1h, rewriteMessageCacheControl bool
 	clientDatelineNormalization                                                           bool
 	claudeOAuthSystemPrompt, claudeOAuthSystemPromptBlocks                                string
+	globalSystemPromptInjection, globalSystemPromptEnabled bool
+	globalSystemPrompt                                                    string
 }
 
 func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context) gatewayForwardingSettingsResult {
@@ -751,6 +756,9 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 				claudeOAuthSystemPromptInjection: cached.claudeOAuthSystemPromptInjection,
 				claudeOAuthSystemPrompt:          cached.claudeOAuthSystemPrompt,
 				claudeOAuthSystemPromptBlocks:    cached.claudeOAuthSystemPromptBlocks,
+				globalSystemPromptInjection: cached.globalSystemPromptInjection,
+				globalSystemPromptEnabled:       cached.globalSystemPromptEnabled,
+				globalSystemPrompt:              cached.globalSystemPrompt,
 				cacheTTL1h:                       cached.anthropicCacheTTL1hInjection,
 				rewriteMessageCacheControl:       cached.rewriteMessageCacheControl,
 				clientDatelineNormalization:      cached.clientDatelineNormalization,
@@ -767,6 +775,9 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 					claudeOAuthSystemPromptInjection: cached.claudeOAuthSystemPromptInjection,
 					claudeOAuthSystemPrompt:          cached.claudeOAuthSystemPrompt,
 					claudeOAuthSystemPromptBlocks:    cached.claudeOAuthSystemPromptBlocks,
+				globalSystemPromptInjection: cached.globalSystemPromptInjection,
+				globalSystemPromptEnabled:       cached.globalSystemPromptEnabled,
+				globalSystemPrompt:              cached.globalSystemPrompt,
 					cacheTTL1h:                       cached.anthropicCacheTTL1hInjection,
 					rewriteMessageCacheControl:       cached.rewriteMessageCacheControl,
 					clientDatelineNormalization:      cached.clientDatelineNormalization,
@@ -780,6 +791,8 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 			SettingKeyEnableMetadataPassthrough,
 			SettingKeyEnableCCHSigning,
 			SettingKeyEnableClaudeOAuthSystemPromptInjection,
+				SettingKeyEnableGlobalSystemPrompt,
+				SettingKeyGlobalSystemPrompt,
 			SettingKeyClaudeOAuthSystemPrompt,
 			SettingKeyClaudeOAuthSystemPromptBlocks,
 			SettingKeyEnableAnthropicCacheTTL1hInjection,
@@ -812,6 +825,11 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 		}
 		systemPrompt := values[SettingKeyClaudeOAuthSystemPrompt]
 		systemPromptBlocks := values[SettingKeyClaudeOAuthSystemPromptBlocks]
+		globalSystemPromptInjection := false
+		if v, ok := values[SettingKeyEnableGlobalSystemPrompt]; ok && v != "" {
+			globalSystemPromptInjection = v == "true"
+		}
+		globalSystemPrompt := values[SettingKeyGlobalSystemPrompt]
 		cacheTTL1h := values[SettingKeyEnableAnthropicCacheTTL1hInjection] == "true"
 		rewriteMessageCacheControl := s.defaultRewriteMessageCacheControl()
 		if v, ok := values[SettingKeyRewriteMessageCacheControl]; ok && v != "" {
@@ -828,6 +846,9 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 			claudeOAuthSystemPromptInjection: systemPromptInjection,
 			claudeOAuthSystemPrompt:          systemPrompt,
 			claudeOAuthSystemPromptBlocks:    systemPromptBlocks,
+			globalSystemPromptInjection:      globalSystemPromptInjection,
+			globalSystemPromptEnabled:       globalSystemPromptInjection,
+			globalSystemPrompt:              globalSystemPrompt,
 			anthropicCacheTTL1hInjection:     cacheTTL1h,
 			rewriteMessageCacheControl:       rewriteMessageCacheControl,
 			clientDatelineNormalization:      clientDatelineNormalization,
@@ -840,6 +861,9 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 			claudeOAuthSystemPromptInjection: systemPromptInjection,
 			claudeOAuthSystemPrompt:          systemPrompt,
 			claudeOAuthSystemPromptBlocks:    systemPromptBlocks,
+			globalSystemPromptInjection:      globalSystemPromptInjection,
+			globalSystemPromptEnabled:       globalSystemPromptInjection,
+			globalSystemPrompt:              globalSystemPrompt,
 			cacheTTL1h:                       cacheTTL1h,
 			rewriteMessageCacheControl:       rewriteMessageCacheControl,
 			clientDatelineNormalization:      clientDatelineNormalization,
@@ -855,6 +879,12 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 // Uses in-process atomic.Value cache with 60s TTL, zero-lock hot path.
 // Returns (fingerprintUnification, metadataPassthrough, cchSigning).
 func (s *SettingService) GetGatewayForwardingSettings(ctx context.Context) (fingerprintUnification, metadataPassthrough, cchSigning bool) {
+// GetGlobalSystemPromptSettings returns the global system prompt injection
+// switch and prompt body. Empty prompt or disabled switch means no injection.
+func (s *SettingService) GetGlobalSystemPromptSettings(ctx context.Context) (enabled bool, prompt string) {
+	result := s.getGatewayForwardingSettingsCached(ctx)
+	return result.globalSystemPromptInjection, result.globalSystemPrompt
+}
 	result := s.getGatewayForwardingSettingsCached(ctx)
 	return result.fp, result.mp, result.cch
 }

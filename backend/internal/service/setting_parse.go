@@ -861,6 +861,8 @@ func (s *SettingService) parseSettings(settings map[string]string) *SystemSettin
 	result.ClaudeOAuthSystemPrompt = settings[SettingKeyClaudeOAuthSystemPrompt]
 	result.ClaudeOAuthSystemPromptBlocks = settings[SettingKeyClaudeOAuthSystemPromptBlocks]
 	result.EnableAnthropicCacheTTL1hInjection = settings[SettingKeyEnableAnthropicCacheTTL1hInjection] == "true"
+	result.EnableGlobalSystemPrompt = settings[SettingKeyEnableGlobalSystemPrompt] == "true"
+	result.GlobalSystemPrompt = settings[SettingKeyGlobalSystemPrompt]
 	if v, ok := settings[SettingKeyRewriteMessageCacheControl]; ok && v != "" {
 		result.RewriteMessageCacheControl = v == "true"
 	} else {

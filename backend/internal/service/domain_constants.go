@@ -632,10 +632,12 @@ const (
 	SettingKeyClaudeOAuthSystemPrompt = "claude_oauth_system_prompt"
 	// SettingKeyClaudeOAuthSystemPromptBlocks Claude OAuth mimic 路径注入的 system blocks JSON 配置（空值使用内置默认）
 	SettingKeyClaudeOAuthSystemPromptBlocks = "claude_oauth_system_prompt_blocks"
-	// SettingKeyEnableAnthropicCacheTTL1hInjection 是否对 Anthropic OAuth/SetupToken 请求体注入 1h cache_control ttl（默认 false）
 	SettingKeyEnableAnthropicCacheTTL1hInjection = "enable_anthropic_cache_ttl_1h_injection"
+	// SettingKeyEnableGlobalSystemPrompt 是否对所有通道启用全局系统提示词注入（默认 false）
+	SettingKeyEnableGlobalSystemPrompt = "enable_global_system_prompt"
+	// SettingKeyGlobalSystemPrompt 注入到所有通道请求的系统提示词正文（空值不注入）
+	SettingKeyGlobalSystemPrompt = "global_system_prompt"
 	// SettingKeyEnableClientDatelineNormalization 是否对 Anthropic OAuth/SetupToken 账号
-	// 的 /v1/messages 请求体做客户端 dateline 归一化（默认 true）。
 	// 归一化把 system prompt / <system-reminder> 块中 "Today's date is …" 语句里的
 	// 非 ASCII 撇号与 "/" 日期分隔符还原为 ASCII 撇号 + "-" 分隔符，抹除某些客户端
 	// 在检测到非官方 base URL 时注入的 3 bit 隐写指纹。仅适用于 Anthropic OAuth/SetupToken

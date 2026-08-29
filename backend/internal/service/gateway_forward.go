@@ -170,6 +170,15 @@ func (s *GatewayService) Forward(ctx context.Context, c *gin.Context, account *A
 		})
 	}
 
+	// Global system prompt injection: applies to every platform (OpenAI,
+	// Anthropic, Gemini, Responses) before any platform-specific rewriting.
+	// The switch and prompt come from the admin settings; when disabled or
+	// empty this is a no-op and the body is untouched.
+	if injected := s.injectGlobalSystemPrompt(ctx, parsed.protocol, body); len(injected) != 0 && !bytes.Equal(injected, body) {
+		if err := replaceBody(injected); err != nil {
+			return nil, err
+		}
+	}
 	// Claude Code 客户端判定：UA 匹配 claude-cli/* 且携带 metadata.user_id。
 	// 真正的 Claude Code 客户端自带完整的 system prompt、cache_control 断点和 header，
 	// 不需要代理做任何 body 级别的 mimicry；强行替换反而会破坏客户端的缓存策略
