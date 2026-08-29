@@ -879,14 +879,15 @@ func (s *SettingService) getGatewayForwardingSettingsCached(ctx context.Context)
 // Uses in-process atomic.Value cache with 60s TTL, zero-lock hot path.
 // Returns (fingerprintUnification, metadataPassthrough, cchSigning).
 func (s *SettingService) GetGatewayForwardingSettings(ctx context.Context) (fingerprintUnification, metadataPassthrough, cchSigning bool) {
+	result := s.getGatewayForwardingSettingsCached(ctx)
+	return result.fp, result.mp, result.cch
+}
+
 // GetGlobalSystemPromptSettings returns the global system prompt injection
 // switch and prompt body. Empty prompt or disabled switch means no injection.
 func (s *SettingService) GetGlobalSystemPromptSettings(ctx context.Context) (enabled bool, prompt string) {
 	result := s.getGatewayForwardingSettingsCached(ctx)
 	return result.globalSystemPromptInjection, result.globalSystemPrompt
-}
-	result := s.getGatewayForwardingSettingsCached(ctx)
-	return result.fp, result.mp, result.cch
 }
 
 // IsAnthropicCacheTTL1hInjectionEnabled 检查是否对 Anthropic OAuth/SetupToken 请求体注入 1h cache_control ttl。

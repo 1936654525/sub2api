@@ -586,12 +586,6 @@ func (s *OpenAIGatewayService) handleAnthropicBufferedStreamingResponse(
 		return nil, fmt.Errorf("upstream stream ended without terminal event")
 	}
 	observer := upstreamResponseModelObserverFromContext(c)
-	// converted through the OpenAI gateway also receive the configured global
-	// system prompt before any conversion or forwarding.
-	if injected := injectGlobalSystemPromptIfEnabled(s.settingService, ctx, PlatformAnthropic, body); len(injected) != 0 {
-		body = injected
-	}
-	}
 	observer.Observe(finalResponse.Model, true)
 	observer.ObserveServiceTier(finalResponse.ServiceTier, true)
 
