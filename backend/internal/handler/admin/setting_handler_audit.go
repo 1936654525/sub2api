@@ -470,6 +470,12 @@ func diffSettings(before *service.SystemSettings, after *service.SystemSettings,
 	if before.EnableAnthropicCacheTTL1hInjection != after.EnableAnthropicCacheTTL1hInjection {
 		changed = append(changed, "enable_anthropic_cache_ttl_1h_injection")
 	}
+	if before.EnableGlobalSystemPrompt != after.EnableGlobalSystemPrompt {
+		changed = append(changed, "enable_global_system_prompt")
+	}
+	if before.GlobalSystemPrompt != after.GlobalSystemPrompt {
+		changed = append(changed, "global_system_prompt")
+	}
 	if before.RewriteMessageCacheControl != after.RewriteMessageCacheControl {
 		changed = append(changed, "rewrite_message_cache_control")
 	}
