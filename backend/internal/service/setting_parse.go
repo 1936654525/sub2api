@@ -234,6 +234,8 @@ func (s *SettingService) InitializeDefaultSettings(ctx context.Context) error {
 		SettingKeyOpenAILowUpstreamRatePriorityEnabled:               "false",
 		SettingKeyOpenAIOAuthSchedulingRateMultiplier:                "1",
 		SettingKeyEnableAnthropicCacheTTL1hInjection:                 "false",
+		SettingKeyEnableGlobalSystemPrompt:                           "false",
+		SettingKeyGlobalSystemPrompt:                                 "",
 		SettingKeyRewriteMessageCacheControl:                         strconv.FormatBool(s.defaultRewriteMessageCacheControl()),
 		SettingKeyEnableClientDatelineNormalization:                  "true",
 		SettingKeyAntigravityUserAgentVersion:                        "",
