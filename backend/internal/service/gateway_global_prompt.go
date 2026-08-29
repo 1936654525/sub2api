@@ -50,11 +50,11 @@ func prependOpenAISystemMessage(body []byte, prompt string) []byte {
 	for _, m := range msgs {
 		items = append(items, m.Value())
 	}
-	next, err := sjson.Set(body, "messages", items)
+	next, err := sjson.Set(string(body), "messages", items)
 	if err != nil {
 		return body
 	}
-	return next
+	return []byte(next)
 }
 
 // prependAnthropicSystemBlock inserts a text block at the front of the system
@@ -73,11 +73,11 @@ func prependAnthropicSystemBlock(body []byte, prompt string) []byte {
 		blocks = append(blocks, map[string]any{"type": "text", "text": sys.String()})
 	}
 	blocks = append([]any{map[string]any{"type": "text", "text": prompt}}, blocks...)
-	next, err := sjson.Set(body, "system", blocks)
+	next, err := sjson.Set(string(body), "system", blocks)
 	if err != nil {
 		return body
 	}
-	return next
+	return []byte(next)
 }
 
 // prependResponsesSystemMessage inserts a system message at the front of the
@@ -89,11 +89,11 @@ func prependResponsesSystemMessage(body []byte, prompt string) []byte {
 	for _, m := range input {
 		items = append(items, m.Value())
 	}
-	next, err := sjson.Set(body, "input", items)
+	next, err := sjson.Set(string(body), "input", items)
 	if err != nil {
 		return body
 	}
-	return next
+	return []byte(next)
 }
 
 // prependGeminiSystemPart inserts a text part at the front of
@@ -107,17 +107,17 @@ func prependGeminiSystemPart(body []byte, prompt string) []byte {
 		for _, p := range parts {
 			items = append(items, p.Value())
 		}
-		next, err := sjson.Set(body, "systemInstruction.parts", items)
+		next, err := sjson.Set(string(body), "systemInstruction.parts", items)
 		if err != nil {
 			return body
 		}
-		return next
+		return []byte(next)
 	}
-	next, err := sjson.Set(body, "systemInstruction.parts", []any{map[string]any{"text": prompt}})
+	next, err := sjson.Set(string(body), "systemInstruction.parts", []any{map[string]any{"text": prompt}})
 	if err != nil {
 		return body
 	}
-	return next
+	return []byte(next)
 }
 
 // injectGlobalSystemPromptIfEnabled reads the global prompt settings and
